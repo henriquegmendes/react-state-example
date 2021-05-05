@@ -1,11 +1,41 @@
 import React from 'react';
 import './App.css';
 
-const App = () => {
-  const [counter, setCounter] = React.useState(1); // counter é o valor inicial e o setCounter é a função que atualiza o counter
-  const [showContent, setShowContent] = React.useState(true);
+import UsersList from './components/UsersList/UsersList';
 
-  console.log('CARREGANDO O COMPONENTE!!!!!!!', counter);
+const users = [
+  {
+    name: 'Vital',
+    age: 22,
+  },
+  {
+    name: 'Mayara',
+    age: 19,
+  },
+  {
+    name: 'Anderson',
+    age: 23,
+  },
+  {
+    name: 'Amarilis',
+    age: 17,
+  }
+];
+
+const App = () => {
+  const [counter, setCounter] = React.useState(10); // counter é o valor inicial e o setCounter é a função que atualiza o counter
+  const [showContent, setShowContent] = React.useState(true);
+  const [usersList, setUsersList] = React.useState([]);
+
+  const loadUsers = () => {
+    setTimeout(() => {
+      setUsersList(users);
+    }, 3000);
+  };
+
+  console.log('RENDERIANDO COMPONENTE!!!!!');
+
+  loadUsers();
 
   return (
     <div className="App">
@@ -13,8 +43,12 @@ const App = () => {
         <div>
           <h1>Counter: {counter}</h1>
           <button onClick={() => setCounter(counter + 1)}>Clique para aumentar o contador em 1!</button>
+
+          {usersList.length > 0 ? <UsersList users={usersList} /> : <h2>Carregando Usuários....</h2>}
+          
         </div>
       ) : <h1>Tudo Escondido!!! ;-)</h1>}
+      {/* Conditional RENDERING  */}
 
       
       <button onClick={() => setShowContent(!showContent)}>{showContent ? 'Esconder' : 'Mostrar'} Todo o conteúdo desta página!!!!</button>
