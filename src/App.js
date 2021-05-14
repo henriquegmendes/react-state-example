@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import UsersList from './components/UsersList/UsersList';
+import Header from './components/Header/Header';
 
 const users = [
   {
@@ -24,18 +25,27 @@ const users = [
 
 const App = () => {
   const [counter, setCounter] = React.useState(10); // counter é o valor inicial e o setCounter é a função que atualiza o counter
-  const [showContent, setShowContent] = React.useState(true);
+  const [showContent, setShowContent] = React.useState(true); // hook que usamos para ter state dentro de funções!!
   const [usersList, setUsersList] = React.useState([]);
 
-  const loadUsers = () => {
-    setTimeout(() => {
-      setUsersList(users);
-    }, 3000);
-  };
+  React.useEffect(() => {
+    // chamando o useEffect passando somente esta callback, ele vai fazer o papel de um componentDidMount E componentDidUpdate (AO MESMO TEMPO!!!)
 
-  console.log('RENDERIANDO COMPONENTE!!!!!');
+    console.log("CHAMOU O USE EFFECT DE MONTAGEM E ATUALIZAÇAO DO APP!!!")
+  });
+  
+  React.useEffect(() => {
+    // chamando o useEffect passando um array vazio como segundo argumento, ele vai fazer o papel SOMENTE de um componentDidMount
+    console.log("CHAMOU O USE EFFECT SOMENTE DE MONTAGEM DO APP!!!")
+  }, []); // esse geralmente é o que mais utilizamos no dia a dia
 
-  loadUsers();
+  React.useEffect(() => {
+    // chamando o useEffect passando somente a callback e um array com uma dependencia, ele vai fazer o papel de um componentDidMount E vai chamar como um componentDidUpdate SOMENTE SE a dependencia "counter" for atualizada
+
+    // setShowContent(false);
+
+    console.log("CHAMOU O USE EFFECT DE MONTAGEM E ATUALIZAÇAO SOMENTE DA VARIAVEL COUNTER DO APP!!!")
+  }, [counter]); // estou passando o counter como DEPENDENCIA deste hook
 
   return (
     <div className="App">
@@ -47,7 +57,7 @@ const App = () => {
           {usersList.length > 0 ? <UsersList users={usersList} /> : <h2>Carregando Usuários....</h2>}
           
         </div>
-      ) : <h1>Tudo Escondido!!! ;-)</h1>}
+      ) : <Header>Tudo Escondido!!! ;-)</Header>}
       {/* Conditional RENDERING  */}
 
       
@@ -57,38 +67,71 @@ const App = () => {
 }
 
 // class App extends React.Component {
-//   state = {
-//     counter: 1,
-//     showContent: true,
+//   constructor() {
+//     super();
+//     console.log("COMPONENTE APP ESTA SENDO CONSTRUIDO!!!!");
+
+//     this.state = {
+//       counter: 1,
+//       showContent: true,
+//       userName: '',
+//     };
 //   }
 
 //   updateCounter = () => {
-//     console.log('CLiquei no updateCounter');
+//     console.log('Cliquei no updateCounter');
 
 //     this.setState({ counter: this.state.counter + 1 });
 //   }
 
 //   updateShowContent = () => {
-//     console.log('CLiquei no updateShowContent');
+//     console.log('Cliquei no updateShowContent');
 
 //     this.setState({ showContent: !this.state.showContent });
 //   }
 
+//   loadUserName = () => {
+//     return new Promise(resolve => {
+//       setTimeout(() => {
+//         resolve("Fulano de Tal");
+//       }, 5000);
+//     });
+//   };
+
 //   render() {
+//     console.log("COMPONENTE APP ESTA RENDERIZANDO!!!!");
+
 //     return (
 //       <div className="App">
-//         {this.state.showContent ? (
+//         <h1>Bem vindo ao APP!!!!!</h1>
+
+//         {this.state.userName.length > 0 ? <p>{this.state.userName}</p> : <p>Carregando usuario.....</p>}
+
+//         {/* {this.state.showContent ? (
 //           <div>
 //             <h1>Counter: {this.state.counter}</h1>
 //             <button onClick={this.updateCounter}>Clique para aumentar o contador em 1!</button>
 //           </div>
-//         ) : <h1>Tudo Escondido!!! ;-)</h1>}
+//         ) : <Header>Tudo Escondido!!! ;-)</Header>}
 
         
-//         <button onClick={this.updateShowContent}>{this.state.showContent ? 'Esconder' : 'Mostrar'} Todo o conteúdo desta página!!!!</button>
+//         <button onClick={this.updateShowContent}>{this.state.showContent ? 'Esconder' : 'Mostrar'} Todo o conteúdo desta página!!!!</button> */}
 //       </div>
 //     );
 //   }
+
+//   componentDidMount() {
+//     console.log("COMPONENTE APP MONTOU!!!!! CARREGANDO NOME DO USUARIO... AGUARDE!!");
+//     this.loadUserName()
+//       .then(name => {
+//         this.setState({ userName: name });
+//       });
+//   }
+
+//   componentDidUpdate() {
+//     console.log("COMPONENTE APP ATUALIZOU!!!!!");
+//   }
+
 // }
 
 export default App;
